@@ -1,18 +1,19 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-void main() => runApp(const BasicGoogleCloudFunctionExample());
+void main() => runApp(const ParametersGoogleCloudFunctionExample());
 
 
-class BasicGoogleCloudFunctionExample extends StatefulWidget {
-  const BasicGoogleCloudFunctionExample({Key? key}) : super(key: key);
+class ParametersGoogleCloudFunctionExample extends StatefulWidget {
+  const ParametersGoogleCloudFunctionExample({Key? key}) : super(key: key);
 
   @override
-  _BasicGoogleCloudFunctionExampleState createState() => _BasicGoogleCloudFunctionExampleState();
+  _ParametersGoogleCloudFunctionExampleState createState() => _ParametersGoogleCloudFunctionExampleState();
 }
 
-class _BasicGoogleCloudFunctionExampleState extends State<BasicGoogleCloudFunctionExample> {
+class _ParametersGoogleCloudFunctionExampleState extends State<ParametersGoogleCloudFunctionExample> {
   late Future<String> futureAlbum;
 
   @override
@@ -51,8 +52,14 @@ class _BasicGoogleCloudFunctionExampleState extends State<BasicGoogleCloudFuncti
 }
 
 Future<String> callCloudFunction() async {
-  final response = await http
-      .get(Uri.parse('insert your url here'));
+  final response = await http.post(Uri.parse('insert your url here'),
+      body: jsonEncode(<String, String>{
+        'name': 'Bart',
+      }));
+
+  // request with url parameters
+  // final response = await http
+  //     .get(Uri.parse('insert your url here?name=Bart'));
   if (response.statusCode == 200) {
     return response.body;
   } else {
